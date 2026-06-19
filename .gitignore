@@ -1,2 +1,8 @@
+encrypted_tokens.data
+cron_change_time
+__pycache__/
+*.pyc
+venv/
+.env
 /.idea/
 __pycache__/
