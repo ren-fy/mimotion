@@ -27,16 +27,10 @@ def get_min_max_by_time(hour=None, minute=None):
         hour = time_bj.hour
     if minute is None:
         minute = time_bj.minute
-    min_step = get_int_value_default(config, 'MIN_STEP', 18000)
-    max_step = get_int_value_default(config, 'MAX_STEP', 25000)
-    # 如果是北京时间 20:00 到 20:30 之间，直接返回配置的范围（不做按时间线性缩放）
-    try:
-        if int(hour) == 20 and int(minute) <= 30:
-            return int(min_step), int(max_step)
-    except Exception:
-        pass
-    time_rate = min((hour * 60 + minute) / (22 * 60), 1)
-    return int(time_rate * min_step), int(time_rate * max_step)
+        # 始终使用配置中的最小/最大步数范围（任意时间均随机）
+        min_step = get_int_value_default(config, 'MIN_STEP', 18000)
+        max_step = get_int_value_default(config, 'MAX_STEP', 25000)
+        return int(min_step), int(max_step)
 
 
 # 虚拟ip地址
