@@ -22,12 +22,27 @@ else
   source venv/bin/activate
 fi
 
+
 echo "Running main.py at $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 # Ensure CONFIG is set
 if [ -z "${CONFIG-}" ]; then
   echo "ERROR: CONFIG environment variable is not set. Exiting." >&2
   exit 1
+fi
+
+# Optional random sleep to pick a moment within a time window (seconds).
+# Set RANDOM_SLEEP_SECONDS in environment (e.g. 1800 for 30 minutes).
+if [ -n "${RANDOM_SLEEP_SECONDS-}" ]; then
+  max=${RANDOM_SLEEP_SECONDS}
+  if ! printf '%s' "$max" | grep -Eq '^[0-9]+$'; then
+    max=0
+  fi
+  if [ "$max" -gt 0 ]; then
+    sleep_seconds=$((RANDOM % (max + 1)))
+    echo "Sleeping random ${sleep_seconds}s (0..${max}) to pick time within window"
+    sleep "$sleep_seconds"
+  fi
 fi
 
 python main.py
